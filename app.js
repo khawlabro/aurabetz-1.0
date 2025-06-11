@@ -485,11 +485,20 @@ getDefaultGameData() {
     this.renderAdminBetsList();
     this.renderBets(this.filterAndSortBets());
     
-    // 5. NEW: Save to JSON file
+    // 5. Save to JSON file
     this.saveDataToFile();
     
-    // 6. Show success message
-    alert(`Bet ${isNew ? 'added' : 'updated'} successfully! Data saved to JSON.`);
+    // 6. SAFE AUTOMATIC REFRESH (NEW)
+    setTimeout(() => {
+        // Only refresh if still on the bets page
+        if (window.location.pathname.includes('index.html') || 
+            window.location.pathname === '/') {
+            window.location.reload();
+        }
+    }, 1500); // 1.5 second delay to ensure save completes
+    
+    // 7. Show success message (will appear before refresh)
+    alert(`Bet ${isNew ? 'added' : 'updated'} successfully! Page will refresh shortly.`);
 }
 
     deleteBet() {
