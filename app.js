@@ -132,25 +132,30 @@ getDefaultGameData() {
     });
 }
 
-    async loadData() {
+async loadData(forceReload = false) {
     try {
-        console.log('Attempting to load bets.json...'); // Add this
-        const response = await fetch('data/bets.json');
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        let url = 'data/bets.json';
+        if (forceReload) {
+            // BUST CACHE by adding timestamp
+            url += '?t=' + new Date().getTime();
         }
+
+        const response = await fetch(url);
+        
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const data = await response.json();
-        console.log('Loaded data:', data); // Add this
-        
         this.bets = data.bets || this.getDefaultBets();
         this.gameData = data.gameData || this.getDefaultGameData();
         
+        return true; // Indicate success
     } catch (error) {
-        console.error("Error loading bets.json:", error);
+        console.error("Error loading data:", error);
         this.bets = this.getDefaultBets();
         this.gameData = this.getDefaultGameData();
+        return false;
+    }
+}
 
     
     
@@ -441,23 +446,64 @@ getDefaultGameData() {
         });
     }
 
-    saveBet() {
-    // [Keep all your existing code until saveDataToFile()]
+     saveBet() {
+    // 1. Get the bet ID and check if it's a new bet
+    const betId = parseInt(document.getElementById('editBetId').value) || 0;
+    const isNew = !this.bets.some(b => b.id === betId);
+    
+    // 2. Collect all the form data
+    const betData = {
+        id: betId,
+        sport: document.getElementById('editSport').value,
+        event: document.getElementById('editEvent').value,
+        time: document.getElementById('editTime').value,
+        mainBet: {
+            type: document.getElementById('editMainBetType').value,
+            pick: document.getElementById('editMainBetPick').value,
+            odds: parseFloat(document.getElementById('editMainBetOdds').value),
+            probability: parseFloat(document.getElementById('editMainBetProbability').value),
+            value: parseFloat(document.getElementById('editMainBetValue').value),
+            confidence: document.getElementById('editMainBetConfidence').value
+        },
+        otherBets: [], // Can be extended to edit these as well
+        analysis: document.getElementById('editAnalysis').value,
+        aiReasoning: document.getElementById('editAiReasoning').value,
+        sportsbooks: [
+            { name: "DraftKings", odds: parseFloat(document.getElementById('editMainBetOdds').value) },
+            { name: "FanDuel", odds: parseFloat(document.getElementById('editMainBetOdds').value) + 5 },
+            { name: "BetMGM", odds: parseFloat(document.getElementById('editMainBetOdds').value) - 5 }
+        ]
+    };
+    
+    // 3. Update the bets array
+    if (isNew) {
+        this.bets.push(betData);
+    } else {
+        const index = this.bets.findIndex(b => b.id === betId);
+        if (index !== -1) {
+            this.bets[index] = betData;
+        }
+    }
+    
+    // 4. Close the modal and refresh the UI
+    this.hideEditBetModal();
+    this.renderAdminBetsList();
+    this.renderBets(this.filterAndSortBets());
 
-    // 5. Save to JSON file - MODIFIED TO USE PROMISE
+    // 5. Save to JSON file
     this.saveDataToFile().then(() => {
-        // 6. Show success message
-        alert(`Bet ${isNew ? 'added' : 'updated'} successfully! Data saved to JSON.`);
+        // 6. FORCE RELOAD DATA FROM SERVER (NEW)
+        return this.loadData(true); // true = force reload
+    }).then(() => {
+        // 7. Update UI
+        this.renderAdminBetsList();
+        this.renderBets(this.filterAndSortBets());
         
-        // 7. SAFE REFRESH AFTER DOWNLOAD COMPLETES
-        setTimeout(() => {
-            if (window.location.pathname.includes('index.html') || 
-                window.location.pathname === '/') {
-                window.location.reload();
-            }
-        }, 1000); // 1-second buffer after download
+        // 8. Show success message
+        alert(`Bet ${isNew ? 'added' : 'updated'} successfully!`);
     }).catch(error => {
-        alert("Saved locally but download failed: " + error);
+        console.error("Save error:", error);
+        alert("Error saving bet. Check console for details.");
     });
 }
 
