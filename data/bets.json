@@ -112,6 +112,37 @@
           "odds": null
         }
       ]
+    },
+    {
+      "id": 4,
+      "sport": "UFC",
+      "event": "Real Event #1",
+      "time": "",
+      "mainBet": {
+        "type": "Moneyline",
+        "pick": "Ocean",
+        "odds": -370,
+        "probability": 0.3,
+        "value": 0.3,
+        "confidence": "High"
+      },
+      "otherBets": [],
+      "analysis": "khawla",
+      "aiReasoning": "test jamalik",
+      "sportsbooks": [
+        {
+          "name": "DraftKings",
+          "odds": -370
+        },
+        {
+          "name": "FanDuel",
+          "odds": -365
+        },
+        {
+          "name": "BetMGM",
+          "odds": -375
+        }
+      ]
     }
   ],
   "gameData": {
