@@ -143,6 +143,37 @@
           "odds": -375
         }
       ]
+    },
+    {
+      "id": 5,
+      "sport": "UFC",
+      "event": "asdf",
+      "time": "",
+      "mainBet": {
+        "type": "",
+        "pick": "",
+        "odds": null,
+        "probability": null,
+        "value": null,
+        "confidence": "High"
+      },
+      "otherBets": [],
+      "analysis": "",
+      "aiReasoning": "",
+      "sportsbooks": [
+        {
+          "name": "DraftKings",
+          "odds": null
+        },
+        {
+          "name": "FanDuel",
+          "odds": null
+        },
+        {
+          "name": "BetMGM",
+          "odds": null
+        }
+      ]
     }
   ],
   "gameData": {
