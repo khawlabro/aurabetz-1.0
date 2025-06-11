@@ -205,6 +205,37 @@
           "odds": null
         }
       ]
+    },
+    {
+      "id": 7,
+      "sport": "Soccer",
+      "event": "Milan vs Barcelona",
+      "time": "",
+      "mainBet": {
+        "type": "Moneyline",
+        "pick": "Barcelona",
+        "odds": -350,
+        "probability": 0.5,
+        "value": 0.5,
+        "confidence": "High"
+      },
+      "otherBets": [],
+      "analysis": "",
+      "aiReasoning": "",
+      "sportsbooks": [
+        {
+          "name": "DraftKings",
+          "odds": -350
+        },
+        {
+          "name": "FanDuel",
+          "odds": -345
+        },
+        {
+          "name": "BetMGM",
+          "odds": -355
+        }
+      ]
     }
   ],
   "gameData": {
