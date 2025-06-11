@@ -132,22 +132,30 @@ getDefaultGameData() {
     });
 }
 
-    async loadData(forceReload = false) {
-    let url = 'data/bets.json';
-    if (forceReload) {
-        url += '?t=' + new Date().getTime(); // cache bust
-    }
+async loadData(forceReload = false) {
+    try {
+        let url = 'data/bets.json';
+        if (forceReload) {
+            // BUST CACHE by adding timestamp
+            url += '?t=' + new Date().getTime();
+        }
+
+        const response = await fetch(url);
+        
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const data = await response.json();
-        console.log('Loaded data:', data); // Add this
-        
         this.bets = data.bets || this.getDefaultBets();
         this.gameData = data.gameData || this.getDefaultGameData();
         
+        return true; // Indicate success
     } catch (error) {
-        console.error("Error loading bets.json:", error);
+        console.error("Error loading data:", error);
         this.bets = this.getDefaultBets();
         this.gameData = this.getDefaultGameData();
+        return false;
+    }
+}
 
     
     
@@ -438,13 +446,10 @@ getDefaultGameData() {
         });
     }
 
-    saveBet() {
+     saveBet() {
     // 1. Get the bet ID and check if it's a new bet
     const betId = parseInt(document.getElementById('editBetId').value) || 0;
     const isNew = !this.bets.some(b => b.id === betId);
-    
-    // Store isNew in a variable accessible to catch
-    const saveSuccessfulMessage = `Bet ${isNew ? 'added' : 'updated'} successfully!`;
     
     // 2. Collect all the form data
     const betData = {
@@ -460,7 +465,7 @@ getDefaultGameData() {
             value: parseFloat(document.getElementById('editMainBetValue').value),
             confidence: document.getElementById('editMainBetConfidence').value
         },
-        otherBets: [],
+        otherBets: [], // Can be extended to edit these as well
         analysis: document.getElementById('editAnalysis').value,
         aiReasoning: document.getElementById('editAiReasoning').value,
         sportsbooks: [
@@ -480,29 +485,26 @@ getDefaultGameData() {
         }
     }
     
-    // 4. Close the modal
+    // 4. Close the modal and refresh the UI
     this.hideEditBetModal();
-    
-    // 5. Immediately update UI (optimistic update)
     this.renderAdminBetsList();
     this.renderBets(this.filterAndSortBets());
-    
-    // 6. Save to JSON file with proper error handling
-    this.saveDataToFile()
-        .then(() => {
-            // 7. Force reload data from server to ensure consistency
-            return this.loadData(true);
-        })
-        .then(() => {
-            // 8. Final UI update with fresh data
-            this.renderAdminBetsList();
-            this.renderBets(this.filterAndSortBets());
-            alert(saveSuccessfulMessage);
-        })
-        .catch(error => {
-            console.error("Save error:", error);
-            alert(`${saveSuccessfulMessage} (Note: ${error.message || "Download failed but data saved locally"})`);
-        });
+
+    // 5. Save to JSON file
+    this.saveDataToFile().then(() => {
+        // 6. FORCE RELOAD DATA FROM SERVER (NEW)
+        return this.loadData(true); // true = force reload
+    }).then(() => {
+        // 7. Update UI
+        this.renderAdminBetsList();
+        this.renderBets(this.filterAndSortBets());
+        
+        // 8. Show success message
+        alert(`Bet ${isNew ? 'added' : 'updated'} successfully!`);
+    }).catch(error => {
+        console.error("Save error:", error);
+        alert("Error saving bet. Check console for details.");
+    });
 }
 
 // UPDATE YOUR saveDataToFile() METHOD TO RETURN A PROMISE:
