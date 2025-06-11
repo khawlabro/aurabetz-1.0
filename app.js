@@ -132,14 +132,11 @@ getDefaultGameData() {
     });
 }
 
-    async loadData() {
-    try {
-        console.log('Attempting to load bets.json...'); // Add this
-        const response = await fetch('data/bets.json');
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    async loadData(forceReload = false) {
+    let url = 'data/bets.json';
+    if (forceReload) {
+        url += '?t=' + new Date().getTime(); // cache bust
+    }
         
         const data = await response.json();
         console.log('Loaded data:', data); // Add this
