@@ -441,14 +441,34 @@ getDefaultGameData() {
         });
     }
 
-    // Replace your existing saveBet() with this version
-saveBet() {
-    // 1. Get form data (existing code remains the same)
+    saveBet() {
+    // 1. Get the bet ID and check if it's a new bet
     const betId = parseInt(document.getElementById('editBetId').value) || 0;
     const isNew = !this.bets.some(b => b.id === betId);
     
-    // 2. Create the updated bet object (existing code remains)
-    const betData = { /* ... your existing betData construction ... */ };
+    // 2. Collect all the form data
+    const betData = {
+        id: betId,
+        sport: document.getElementById('editSport').value,
+        event: document.getElementById('editEvent').value,
+        time: document.getElementById('editTime').value,
+        mainBet: {
+            type: document.getElementById('editMainBetType').value,
+            pick: document.getElementById('editMainBetPick').value,
+            odds: parseFloat(document.getElementById('editMainBetOdds').value),
+            probability: parseFloat(document.getElementById('editMainBetProbability').value),
+            value: parseFloat(document.getElementById('editMainBetValue').value),
+            confidence: document.getElementById('editMainBetConfidence').value
+        },
+        otherBets: [], // Can be extended to edit these as well
+        analysis: document.getElementById('editAnalysis').value,
+        aiReasoning: document.getElementById('editAiReasoning').value,
+        sportsbooks: [
+            { name: "DraftKings", odds: parseFloat(document.getElementById('editMainBetOdds').value) },
+            { name: "FanDuel", odds: parseFloat(document.getElementById('editMainBetOdds').value) + 5 },
+            { name: "BetMGM", odds: parseFloat(document.getElementById('editMainBetOdds').value) - 5 }
+        ]
+    };
     
     // 3. Update the bets array
     if (isNew) {
@@ -460,19 +480,16 @@ saveBet() {
         }
     }
     
-    // 4. Force reload the data (NEW)
-    this.loadData().then(() => {
-        // 5. Update all UI components
-        this.hideEditBetModal();
-        this.renderAdminBetsList();
-        this.renderBets(this.filterAndSortBets());
-        
-        // 6. Show success message
-        alert(`Bet ${isNew ? 'added' : 'updated'} successfully!`);
-    }).catch(error => {
-        console.error("Error reloading data:", error);
-        alert("Update saved but refresh failed. Please reload manually.");
-    });
+    // 4. Close the modal and refresh the UI
+    this.hideEditBetModal();
+    this.renderAdminBetsList();
+    this.renderBets(this.filterAndSortBets());
+    
+    // 5. NEW: Save to JSON file
+    this.saveDataToFile();
+    
+    // 6. Show success message
+    alert(`Bet ${isNew ? 'added' : 'updated'} successfully! Data saved to JSON.`);
 }
 
     deleteBet() {
