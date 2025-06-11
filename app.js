@@ -439,23 +439,70 @@ getDefaultGameData() {
     }
 
     saveBet() {
-    // [Keep all your existing code until saveDataToFile()]
-
-    // 5. Save to JSON file - MODIFIED TO USE PROMISE
-    this.saveDataToFile().then(() => {
-        // 6. Show success message
-        alert(`Bet ${isNew ? 'added' : 'updated'} successfully! Data saved to JSON.`);
-        
-        // 7. SAFE REFRESH AFTER DOWNLOAD COMPLETES
-        setTimeout(() => {
-            if (window.location.pathname.includes('index.html') || 
-                window.location.pathname === '/') {
-                window.location.reload();
-            }
-        }, 1000); // 1-second buffer after download
-    }).catch(error => {
-        alert("Saved locally but download failed: " + error);
-    });
+    // 1. Get the bet ID and check if it's a new bet
+    const betId = parseInt(document.getElementById('editBetId').value) || 0;
+    const isNew = !this.bets.some(b => b.id === betId);
+    
+    // Store isNew in a variable accessible to catch
+    const saveSuccessfulMessage = `Bet ${isNew ? 'added' : 'updated'} successfully!`;
+    
+    // 2. Collect all the form data
+    const betData = {
+        id: betId,
+        sport: document.getElementById('editSport').value,
+        event: document.getElementById('editEvent').value,
+        time: document.getElementById('editTime').value,
+        mainBet: {
+            type: document.getElementById('editMainBetType').value,
+            pick: document.getElementById('editMainBetPick').value,
+            odds: parseFloat(document.getElementById('editMainBetOdds').value),
+            probability: parseFloat(document.getElementById('editMainBetProbability').value),
+            value: parseFloat(document.getElementById('editMainBetValue').value),
+            confidence: document.getElementById('editMainBetConfidence').value
+        },
+        otherBets: [],
+        analysis: document.getElementById('editAnalysis').value,
+        aiReasoning: document.getElementById('editAiReasoning').value,
+        sportsbooks: [
+            { name: "DraftKings", odds: parseFloat(document.getElementById('editMainBetOdds').value) },
+            { name: "FanDuel", odds: parseFloat(document.getElementById('editMainBetOdds').value) + 5 },
+            { name: "BetMGM", odds: parseFloat(document.getElementById('editMainBetOdds').value) - 5 }
+        ]
+    };
+    
+    // 3. Update the bets array
+    if (isNew) {
+        this.bets.push(betData);
+    } else {
+        const index = this.bets.findIndex(b => b.id === betId);
+        if (index !== -1) {
+            this.bets[index] = betData;
+        }
+    }
+    
+    // 4. Close the modal
+    this.hideEditBetModal();
+    
+    // 5. Immediately update UI (optimistic update)
+    this.renderAdminBetsList();
+    this.renderBets(this.filterAndSortBets());
+    
+    // 6. Save to JSON file with proper error handling
+    this.saveDataToFile()
+        .then(() => {
+            // 7. Force reload data from server to ensure consistency
+            return this.loadData(true);
+        })
+        .then(() => {
+            // 8. Final UI update with fresh data
+            this.renderAdminBetsList();
+            this.renderBets(this.filterAndSortBets());
+            alert(saveSuccessfulMessage);
+        })
+        .catch(error => {
+            console.error("Save error:", error);
+            alert(`${saveSuccessfulMessage} (Note: ${error.message || "Download failed but data saved locally"})`);
+        });
 }
 
 // UPDATE YOUR saveDataToFile() METHOD TO RETURN A PROMISE:
