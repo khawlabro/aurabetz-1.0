@@ -132,14 +132,11 @@ getDefaultGameData() {
     });
 }
 
-    async loadData() {
-    try {
-        console.log('Attempting to load bets.json...'); // Add this
-        const response = await fetch('data/bets.json');
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    async loadData(forceReload = false) {
+    let url = 'data/bets.json';
+    if (forceReload) {
+        url += '?t=' + new Date().getTime(); // cache bust
+    }
         
         const data = await response.json();
         console.log('Loaded data:', data); // Add this
@@ -442,69 +439,23 @@ getDefaultGameData() {
     }
 
     saveBet() {
-    // 1. Get the bet ID and check if it's a new bet
-    const betId = parseInt(document.getElementById('editBetId').value) || 0;
-    const isNew = !this.bets.some(b => b.id === betId);
-    
-    // 2. Collect all the form data
-    const betData = {
-        id: betId,
-        sport: document.getElementById('editSport').value,
-        event: document.getElementById('editEvent').value,
-        time: document.getElementById('editTime').value,
-        mainBet: {
-            type: document.getElementById('editMainBetType').value,
-            pick: document.getElementById('editMainBetPick').value,
-            odds: parseFloat(document.getElementById('editMainBetOdds').value),
-            probability: parseFloat(document.getElementById('editMainBetProbability').value),
-            value: parseFloat(document.getElementById('editMainBetValue').value),
-            confidence: document.getElementById('editMainBetConfidence').value
-        },
-        otherBets: [],
-        analysis: document.getElementById('editAnalysis').value,
-        aiReasoning: document.getElementById('editAiReasoning').value,
-        sportsbooks: [
-            { name: "DraftKings", odds: parseFloat(document.getElementById('editMainBetOdds').value) },
-            { name: "FanDuel", odds: parseFloat(document.getElementById('editMainBetOdds').value) + 5 },
-            { name: "BetMGM", odds: parseFloat(document.getElementById('editMainBetOdds').value) - 5 }
-        ]
-    };
-    
-    // 3. Update the bets array
-    if (isNew) {
-        this.bets.push(betData);
-    } else {
-        const index = this.bets.findIndex(b => b.id === betId);
-        if (index !== -1) {
-            this.bets[index] = betData;
-        }
-    }
-    
-    // 4. Close the modal
-    this.hideEditBetModal();
-    
-    // 5. Save to JSON file with PROPER error handling
-    this.saveDataToFile()
-        .then(() => {
-            // 6. FORCE RELOAD DATA FROM SERVER (not just local memory)
-            return this.loadData(true); // true = bypass cache
-        })
-        .then(() => {
-            // 7. Update ALL UI components
-            this.renderAdminBetsList();
-            this.renderBets(this.filterAndSortBets());
-            
-            // 8. Show success message
-            alert(`Bet ${isNew ? 'added' : 'updated'} successfully!`);
-        })
-        .catch(error => {
-            console.error("Save error:", error);
-            alert("Saved locally but failed to update UI. Error: " + error.message);
-            
-            // Fallback: at least update local UI
-            this.renderAdminBetsList();
-            this.renderBets(this.filterAndSortBets());
-        });
+    // [Keep all your existing code until saveDataToFile()]
+
+    // 5. Save to JSON file - MODIFIED TO USE PROMISE
+    this.saveDataToFile().then(() => {
+        // 6. Show success message
+        alert(`Bet ${isNew ? 'added' : 'updated'} successfully! Data saved to JSON.`);
+        
+        // 7. SAFE REFRESH AFTER DOWNLOAD COMPLETES
+        setTimeout(() => {
+            if (window.location.pathname.includes('index.html') || 
+                window.location.pathname === '/') {
+                window.location.reload();
+            }
+        }, 1000); // 1-second buffer after download
+    }).catch(error => {
+        alert("Saved locally but download failed: " + error);
+    });
 }
 
 // UPDATE YOUR saveDataToFile() METHOD TO RETURN A PROMISE:
