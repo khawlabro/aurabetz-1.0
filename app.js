@@ -903,28 +903,34 @@ getDefaultGameData() {
         });
     }
 }
-// ===== Email Signup Functionality =====
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize email signup
+// ===== Email Signup Functionality ===== 
+function setupEmailSignup() {
     const emailInput = document.getElementById('emailInput');
     const submitEmailBtn = document.getElementById('submitEmailBtn');
     
+    const showEmailModal = () => {
+        const emailModal = document.getElementById('emailSignupModal');
+        if (emailModal) emailModal.classList.add('active');
+    };
+
+    const hideEmailModal = () => {
+        const emailModal = document.getElementById('emailSignupModal');
+        if (emailModal) emailModal.classList.remove('active');
+    };
+
     if (submitEmailBtn) {
         submitEmailBtn.addEventListener('click', submitEmail);
     }
     
     if (emailInput) {
-        emailInput.addEventListener('keypress', function(e) {
+        emailInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') submitEmail();
         });
     }
-    
-    // Show modal on page load
-    setTimeout(() => {
-        const emailModal = document.getElementById('emailSignupModal');
-        if (emailModal) emailModal.style.display = 'block';
-    }, 1000);
-});
+
+    // Show after slight delay
+    setTimeout(showEmailModal, 1000);
+}
 
 function submitEmail() {
     const email = document.getElementById('emailInput').value.trim();
@@ -947,8 +953,14 @@ function submitEmail() {
     
     // Close modal
     const modal = document.getElementById('emailSignupModal');
-    if (modal) modal.style.display = 'none';
+    if (modal) modal.classList.remove('active');
 }
+
+// Initialize email signup AFTER main app
+document.addEventListener('DOMContentLoaded', () => {
+    const app = new BetSmartApp();
+    setupEmailSignup(); // Add this line
+});
 // Initialize the app when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     const app = new BetSmartApp();
