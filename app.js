@@ -903,7 +903,52 @@ getDefaultGameData() {
         });
     }
 }
+// ===== Email Signup Functionality =====
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize email signup
+    const emailInput = document.getElementById('emailInput');
+    const submitEmailBtn = document.getElementById('submitEmailBtn');
+    
+    if (submitEmailBtn) {
+        submitEmailBtn.addEventListener('click', submitEmail);
+    }
+    
+    if (emailInput) {
+        emailInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') submitEmail();
+        });
+    }
+    
+    // Show modal on page load
+    setTimeout(() => {
+        const emailModal = document.getElementById('emailSignupModal');
+        if (emailModal) emailModal.style.display = 'block';
+    }, 1000);
+});
 
+function submitEmail() {
+    const email = document.getElementById('emailInput').value.trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!emailPattern.test(email)) {
+        alert('Please enter a valid email address');
+        return;
+    }
+    
+    // Save to localStorage
+    const existing = JSON.parse(localStorage.getItem("betSmartEmails") || "[]");
+    if (!existing.includes(email)) {
+        existing.push(email);
+        localStorage.setItem("betSmartEmails", JSON.stringify(existing));
+    }
+    
+    alert('Thank you! Check your email for access.');
+    document.getElementById('emailInput').value = '';
+    
+    // Close modal
+    const modal = document.getElementById('emailSignupModal');
+    if (modal) modal.style.display = 'none';
+}
 // Initialize the app when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     const app = new BetSmartApp();
