@@ -576,4 +576,63 @@ input[type="checkbox"] {
     justify-content: center;
     margin-top: 1.5rem;
 }
+    /* ===== Email Signup Modal Styles ===== */
+#emailSignupModal .modal-content {
+    max-width: 450px;
+    text-align: center;
+    padding: 2rem;
+}
+
+#emailSignupModal .modal-header h2 {
+    font-size: 28px;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+#emailSignupModal .modal-header p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+#emailSignupModal .features-list {
+    text-align: left;
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+    list-style-type: none;
+}
+
+#emailSignupModal .features-list li {
+    margin-bottom: 0.75rem;
+    position: relative;
+    padding-left: 1.25rem;
+}
+
+#emailSignupModal .features-list li:before {
+    content: "-";
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
+}
+
+#emailSignupModal .divider {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 1.5rem 0;
+}
+
+#emailSignupModal .privacy-note {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-top: 1rem;
+}
+
+#emailSignupModal .stats {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
 }
