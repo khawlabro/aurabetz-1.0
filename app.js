@@ -932,79 +932,15 @@ function setupEmailSignup() {
     setTimeout(showEmailModal, 1000);
 }
 
-function setupEmailSignup() {
-    // Check if email already exists in localStorage
-    const savedEmails = JSON.parse(localStorage.getItem("betSmartEmails") || []);
-    if (savedEmails.length > 0) {
-        return; // Skip showing modal if email exists
-    }
-
-    const emailInput = document.getElementById('emailInput');
-    const submitEmailBtn = document.getElementById('submitEmailBtn');
-    
-    const showEmailModal = () => {
-        const emailModal = document.getElementById('emailSignupModal');
-        if (emailModal) emailModal.classList.add('active');
-    };
-    }
-
-// ===== Email Submission & Download =====
 function submitEmail() {
     const email = document.getElementById('emailInput').value.trim();
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
-    // Validate email format
     if (!emailPattern.test(email)) {
         alert('Please enter a valid email address');
         return;
     }
     
-    // 1. Save to localStorage
-    const existingEmails = JSON.parse(localStorage.getItem("betSmartEmails") || []);
-    if (!existingEmails.includes(email)) {
-        existingEmails.push(email);
-        localStorage.setItem("betSmartEmails", JSON.stringify(existingEmails));
-        
-        // 2. Download emails as file
-        downloadEmailList(existingEmails);
-    }
-    
-    // 3. Show confirmation and reset
-    alert('Thank you! Your email has been saved.');
-    document.getElementById('emailInput').value = '';
-    
-    // 4. Hide modal
-    const modal = document.getElementById('emailSignupModal');
-    if (modal) modal.classList.remove('active');
-}
-
-// Helper function to download emails
-function downloadEmailList(emails) {
-    // Create file content (one email per line)
-    const fileContent = emails.join('\n');
-    
-    // Create downloadable link
-    const blob = new Blob([fileContent], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    
-    // Set file name with current date
-    const today = new Date();
-    const dateString = today.toISOString().split('T')[0];
-    a.download = `betSmart_emails_${dateString}.txt`;
-    a.href = url;
-    
-    // Trigger download
-    document.body.appendChild(a);
-    a.click();
-    
-    // Clean up
-    setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }, 100);
-}
-
     // Save to localStorage
     const existing = JSON.parse(localStorage.getItem("betSmartEmails") || "[]");
     if (!existing.includes(email)) {
