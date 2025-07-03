@@ -134,30 +134,34 @@ getDefaultGameData() {
 
     async loadData() {
     try {
-        console.log('Attempting to load bets.json...'); // Add this
-        const response = await fetch('data/bets.json');
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        const response = await fetch(this.DATA_URL);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const data = await response.json();
-        console.log('Loaded data:', data); // Add this
         
-        this.bets = data.bets || this.getDefaultBets();
+        // Validate JSON structure
+        if (!data.bets || !Array.isArray(data.bets)) {
+            throw new Error("Invalid bets data structure");
+        }
+        
+        this.bets = data.bets.filter(bet => 
+            bet.id && 
+            bet.event && 
+            bet.mainBet && 
+            bet.mainBet.pick
+        );
+        
         this.gameData = data.gameData || this.getDefaultGameData();
         
     } catch (error) {
-        console.error("Error loading bets.json:", error);
+        console.error("Error loading data:", error);
         this.bets = this.getDefaultBets();
         this.gameData = this.getDefaultGameData();
-
+        alert("Warning: Using default data due to load error");
+    }
     
-    
-    } 
-    this.render(); // Ensure this is called
+    this.render();
 }
-
     render() {
         this.renderBets(this.filterAndSortBets());
     }
