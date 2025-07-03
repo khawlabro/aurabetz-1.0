@@ -53,26 +53,35 @@ isGitHubPages() {
 }
     async saveDataToFile() {
     try {
-        // 1. Prepare the data to save
         const dataToSave = {
             bets: this.bets,
             gameData: this.gameData
         };
         
-        // 2. Create a download link for the user
-        const dataStr = "data:text/json;charset=utf-8," + 
-                       encodeURIComponent(JSON.stringify(dataToSave, null, 2));
-        const downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", "bets.json");
-        document.body.appendChild(downloadAnchorNode);
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
+        // Validate before saving
+        if (!dataToSave.bets.some(b => b.id && b.event)) {
+            throw new Error("Invalid bets data - missing required fields");
+        }
         
-        console.log("Data prepared for download");
+        const blob = new Blob([JSON.stringify(dataToSave, null, 2)], 
+            { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'bets.json';
+        document.body.appendChild(a);
+        a.click();
+        
+        // Cleanup
+        setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }, 100);
+        
     } catch (error) {
-        console.error("Error saving data:", error);
-        alert("Error saving data. Check console for details.");
+        console.error("Save failed:", error);
+        alert(`Save failed: ${error.message}`);
     }
 }
 getDefaultBets() {
