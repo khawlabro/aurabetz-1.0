@@ -265,6 +265,16 @@
                         <button id="addBetBtn" class="btn btn-primary">
                             <i class="fas fa-plus"></i> Add New Bet
                         </button>
+                        <button id="saveToFileBtn" class="btn btn-success">
+                            <i class="fas fa-save"></i> Save & Download JSON
+                        </button>
+                        <button id="backupBtn" class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Backup JSON
+                        </button>
+                        <label for="jsonFileInput" class="btn btn-info">
+                            <i class="fas fa-upload"></i> Import JSON
+                        </label>
+                        <input type="file" id="jsonFileInput" class="hidden" accept=".json">
                     </div>
                     <div id="adminBetsList" class="admin-bets-list"></div>
                 </div>
