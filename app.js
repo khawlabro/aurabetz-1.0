@@ -670,6 +670,7 @@ class BetSmartApp {
             this.renderBets(this.filterAndSortBets());
             
             alert(`Bet ${isNew ? 'added' : 'updated'} successfully!`);
+            this.saveDataToFile();
         } catch (error) {
             console.error("Error saving bet:", error);
             alert(`Error: ${error.message}`);
@@ -687,6 +688,7 @@ class BetSmartApp {
             this.renderAdminBetsList();
             this.renderBets(this.filterAndSortBets());
             alert('Bet deleted successfully!');
+            this.saveDataToFile();
         }
     }
 
