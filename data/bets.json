@@ -2,207 +2,32 @@
   "bets": [
     {
       "id": 1,
-      "sport": "UFC",
-      "event": "Islam Makhachev vs Dustin Poirier",
-      "time": "2024-06-01T23:00:00Z",
+      "sport": "Table Tennis",
+      "event": "(Finished - Won) Bruna Takahashi vs Dina Meshref",
+      "time": "10:40 PM, July 06, 2025",
       "mainBet": {
         "type": "Moneyline",
-        "pick": "Islam Makhachev",
-        "odds": -250,
-        "probability": 0.78,
-        "value": 0.28,
+        "pick": "Bruna Takahashi",
+        "odds": -200,
+        "probability": 0.7,
+        "value": 0.12,
         "confidence": "High"
       },
-      "otherBets": [
-        {
-          "type": "Method of Victory",
-          "pick": "Makhachev by Submission",
-          "odds": 150,
-          "value": 0.18
-        },
-        {
-          "type": "Round Total",
-          "pick": "Under 4.5 Rounds",
-          "odds": -120,
-          "value": 0.15
-        }
-      ],
-      "analysis": "Makhachev's grappling advantage should be decisive against Poirier. While Dustin has improved his takedown defense, Islam's chain wrestling and top control will likely wear him down.",
-      "aiReasoning": "Our model shows a 78% win probability for Makhachev based on 35 similar matchup comparisons. The value is strong at 28% above implied probability. Submission is the most likely finish method (42% probability).",
+      "otherBets": ["N/A"],
+      "analysis": "Takahashi’s world ranking (18 vs. 28), recent upsets (4-0 vs. Szocs, 3-2 vs. Shin), and offensive style (backhand-heavy, aggressive serves) give her a clear edge over Meshref’s defensive game, which struggles against top attackers (e.g., 0-3 vs. Odo, 1-3 vs. Sun),.",
+      "aiReasoning": "Betting Recommendations: Takahashi Moneyline (-200): +12.43% EV, solid value due to ranking, form, and style advantage.",
       "sportsbooks": [
         {
           "name": "DraftKings",
-          "odds": -250
+          "odds": -200
         },
         {
           "name": "FanDuel",
-          "odds": -240
+          "odds": -195
         },
         {
           "name": "BetMGM",
-          "odds": -260
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "sport": "NBA",
-      "event": "Boston Celtics vs Dallas Mavericks",
-      "time": "2024-06-06T02:30:00Z",
-      "mainBet": {
-        "type": "Point Spread",
-        "pick": "Celtics -6.5",
-        "odds": -110,
-        "probability": 0.62,
-        "value": 0.17,
-        "confidence": "Medium"
-      },
-      "otherBets": [
-        {
-          "type": "Player Prop",
-          "pick": "Jayson Tatum Over 28.5 Points",
-          "odds": -115,
-          "value": 0.12
-        }
-      ],
-      "analysis": "Boston's home court advantage and superior defense should cover this spread. Dallas struggles against teams with strong wing defenders like the Celtics.",
-      "aiReasoning": "Statistical model gives Celtics a 68% chance to cover based on last 20 home games vs Western Conference opponents. Tatum averages 30.2 ppg in similar matchups.",
-      "sportsbooks": [
-        {
-          "name": "DraftKings",
-          "odds": -110
-        },
-        {
-          "name": "FanDuel",
-          "odds": -105
-        },
-        {
-          "name": "BetMGM",
-          "odds": -115
-        }
-      ]
-    },
-    {
-      "id": 6,
-      "sport": "UFC",
-      "event": "Florida Panthers vs Edmenton Oilers",
-      "time": "",
-      "mainBet": {
-        "type": "Moneyline",
-        "pick": "Florida Panthers",
-        "odds": null,
-        "probability": null,
-        "value": null,
-        "confidence": "High"
-      },
-      "otherBets": [],
-      "analysis": "",
-      "aiReasoning": "",
-      "sportsbooks": [
-        {
-          "name": "DraftKings",
-          "odds": null
-        },
-        {
-          "name": "FanDuel",
-          "odds": null
-        },
-        {
-          "name": "BetMGM",
-          "odds": null
-        }
-      ]
-    },
-    {
-      "id": 7,
-      "sport": "Soccer",
-      "event": "Milan vs Barcelona",
-      "time": "",
-      "mainBet": {
-        "type": "Moneyline",
-        "pick": "Barcelona",
-        "odds": -350,
-        "probability": 0.5,
-        "value": 0.5,
-        "confidence": "High"
-      },
-      "otherBets": [],
-      "analysis": "",
-      "aiReasoning": "",
-      "sportsbooks": [
-        {
-          "name": "DraftKings",
-          "odds": -350
-        },
-        {
-          "name": "FanDuel",
-          "odds": -345
-        },
-        {
-          "name": "BetMGM",
-          "odds": -355
-        }
-      ]
-    },
-    {
-      "id": 8,
-      "sport": "UFC",
-      "event": "Big Mike vs Osamba",
-      "time": "",
-      "mainBet": {
-        "type": "",
-        "pick": "",
-        "odds": null,
-        "probability": null,
-        "value": null,
-        "confidence": "High"
-      },
-      "otherBets": [],
-      "analysis": "",
-      "aiReasoning": "",
-      "sportsbooks": [
-        {
-          "name": "DraftKings",
-          "odds": null
-        },
-        {
-          "name": "FanDuel",
-          "odds": null
-        },
-        {
-          "name": "BetMGM",
-          "odds": null
-        }
-      ]
-    },
-    {
-      "id": 9,
-      "sport": "UFC",
-      "event": "bitch",
-      "time": "",
-      "mainBet": {
-        "type": "",
-        "pick": "",
-        "odds": null,
-        "probability": null,
-        "value": null,
-        "confidence": "High"
-      },
-      "otherBets": [],
-      "analysis": "",
-      "aiReasoning": "",
-      "sportsbooks": [
-        {
-          "name": "DraftKings",
-          "odds": null
-        },
-        {
-          "name": "FanDuel",
-          "odds": null
-        },
-        {
-          "name": "BetMGM",
-          "odds": null
+          "odds": -205
         }
       ]
     }
@@ -238,5 +63,9 @@
         "won": null
       }
     ]
+  },
+  "_metadata": {
+    "savedAt": "2025-07-07T16:51:29.857Z",
+    "version": "2.0"
   }
 }
