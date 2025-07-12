@@ -3,7 +3,7 @@
     {
       "id": 0,
       "sport": "Table Tennis",
-      "event": "Milan Klement vs Frantisek Just",
+      "event": "(Finished - Won) Milan Klement vs Frantisek Just",
       "time": "July 9, 7:00 PM 2025",
       "mainBet": {
         "type": "Moneyline",
@@ -14,8 +14,8 @@
         "confidence": "High"
       },
       "otherBets": [],
-      "analysis": "Betting Recommendations: Klement Moneyline (-159): +9.14% EV, solid value due to recent form, head-to-head dominance, and versatility.\n\nStyle Matchup (Klement +9%): Versatility vs. aggressive play.\nDefensive Consistency (Klement +8%): Strong counters.\nHead-to-Head History (Klement +6%): 32-20 record.\nMental Resilience (Klement +7%): Confidence from wins.\nFirst-Set Win Rate (Klement +7%): Early dominance.",
-      "aiReasoning": "Klement’s recent form (7-3, wins over Syhora, Bares) and versatile style give him a clear edge over Just’s aggressive but inconsistent play (6-4, losses to Bares, Postelt). Klement’s adaptability in mid-length rallies, as seen in his 3-2 win over Just (Mar 2025), counters Just’s forehand smashes.",
+      "analysis": "Style Matchup (Klement +9%): Versatility vs. aggressive play.\nDefensive Consistency (Klement +8%): Strong counters.\nHead-to-Head History (Klement +6%): 32-20 record.\nMental Resilience (Klement +7%): Confidence from wins.\nFirst-Set Win Rate (Klement +7%): Early dominance.",
+      "aiReasoning": "Klement’s recent form (7-3, wins over Syhora, Bares) and versatile style give him a clear edge over Just’s aggressive but inconsistent play (6-4, losses to Bares, Postelt). Klement’s adaptability in mid-length rallies, as seen in his 3-2 win over Just (Mar 2025), counters Just’s forehand smashes.\n\nBetting Recommendations: Klement Moneyline (-159): +9.14% EV, solid value due to recent form, head-to-head dominance, and versatility.",
       "sportsbooks": [
         {
           "name": "DraftKings",
@@ -98,7 +98,7 @@
     ]
   },
   "_metadata": {
-    "savedAt": "2025-07-10T13:01:48.993Z",
+    "savedAt": "2025-07-10T13:02:26.402Z",
     "version": "2.0"
   }
 }
