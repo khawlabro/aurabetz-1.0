@@ -43,7 +43,7 @@ class BetSmartApp {
         this.checkDarkMode();
     }
 
-    // Load data with enhanced validation
+    // Improved data loading with better validation
     async loadData() {
         try {
             console.log('Loading data from:', this.DATA_URL);
@@ -60,14 +60,14 @@ class BetSmartApp {
                 throw new Error("Invalid data structure: bets array missing");
             }
             
-            // Filter out invalid bets
-            this.bets = data.bets.filter(bet => 
-                bet.id &&
-                bet.event && 
-                bet.event.trim() !== "" &&
-                bet.mainBet && 
-                bet.mainBet.pick
-            );
+            // Improved validation for each bet
+            this.bets = data.bets.filter(bet => {
+                return typeof bet.id === 'number' &&  // Check ID is a number
+                       bet.event && 
+                       bet.event.trim() !== "" &&
+                       bet.mainBet && 
+                       bet.mainBet.pick
+            });
             
             // Validate game data
             this.gameData = data.gameData || this.getDefaultGameData();
@@ -87,7 +87,7 @@ class BetSmartApp {
     getDefaultBets() {
         return [
             {
-                id: 1,
+                id: 1,  // Changed from 0 to 1
                 sport: "UFC",
                 event: "Jon Jones vs Stipe Miocic",
                 time: "2023-11-12T03:00:00Z",
@@ -227,13 +227,14 @@ class BetSmartApp {
                     throw new Error("Invalid file format: bets array missing");
                 }
                 
-                // Basic validation for each bet
-                const validBets = data.bets.filter(bet => 
-                    bet.id && 
-                    bet.event && 
-                    bet.mainBet && 
-                    bet.mainBet.pick
-                );
+                // Improved validation for each bet
+                const validBets = data.bets.filter(bet => {
+                    return typeof bet.id === 'number' &&  // Check ID is a number
+                           bet.event && 
+                           bet.event.trim() !== "" &&
+                           bet.mainBet && 
+                           bet.mainBet.pick
+                });
                 
                 if (validBets.length === 0) {
                     throw new Error("No valid bets found in file");
@@ -620,12 +621,18 @@ class BetSmartApp {
     // Save bet (create or update)
     saveBet() {
         try {
-            const betId = parseInt(document.getElementById('editBetId').value) || 0;
-            const isNew = !this.bets.some(b => b.id === betId);
+            const betIdInput = document.getElementById('editBetId').value;
+            const betId = betIdInput === '' ? null : parseInt(betIdInput);
+            const isNew = betId === null;
+            
+            // Generate new ID if creating a new bet
+            const newId = isNew ? 
+                (this.bets.length > 0 ? Math.max(...this.bets.map(b => b.id)) + 1 : 1) : 
+                betId;
             
             // Collect form data
             const betData = {
-                id: betId,
+                id: newId,
                 sport: document.getElementById('editSport').value.trim(),
                 event: document.getElementById('editEvent').value.trim(),
                 time: document.getElementById('editTime').value.trim(),
